@@ -3,6 +3,28 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+const errorModal = document.getElementById("modal");
+errorModal.classList.add("hidden");
+
+const likeButtons = document.querySelectorAll(".like-glyph");
+likeButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    mimicServerCall()
+      .then(() => {
+        button.classList.toggle("activated-heart");
+        button.classList.toggle("glyph-heart");
+      })
+      .catch(() => {
+        errorModal.classList.remove("hidden");
+        const errorMessage = document.getElementById("modal-message");
+        errorMessage.textContent = "Random server error. Please try again.";
+        setTimeout(() => {
+          errorModal.classList.add("hidden");
+        }, 3000);
+      });
+  });
+});
+
 
 
 
@@ -23,3 +45,5 @@ function mimicServerCall(url="http://mimicServer.example.com", config={}) {
     }, 300);
   });
 }
+
+console.log(mimicServerCall())
